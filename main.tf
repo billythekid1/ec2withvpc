@@ -47,4 +47,5 @@ resource "aws_internet_gateway" "mqb_internet_gateway" {
 	tags {
          name = "mqb_internet"
 }
-}
+
+
