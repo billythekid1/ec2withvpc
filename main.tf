@@ -30,6 +30,8 @@ resource "aws_security_group_rule" "MQB_Sec_Group_2" {
 }
 resource "aws_vpc" "mqb_vpc" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = "true"
+  
        tags {
 	name = "mqb_vpc"
 }
@@ -47,5 +49,13 @@ resource "aws_internet_gateway" "mqb_internet_gateway" {
 	tags {
          name = "mqb_internet"
 }
-
-
+}
+resource "aws_route_table" "MQB_Public_route" {
+   vpc_id = "${aws_vpc.mqb_vpc.id}"
+   propagating_vgws = []
+}
+resource "aws_route" "mqb_public" {
+   route_table_id = "${aws_route_table.MQB_Public_route.id}"
+   destination_cidr_block = "0.0.0.0/0"
+   gateway_id     = "${aws_internet_gateway.mqb_internet_gateway.id}"
+}
